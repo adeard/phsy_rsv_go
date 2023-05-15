@@ -6,6 +6,7 @@ import (
 	"os"
 	"phsy_rsv_go/modules/book"
 	"phsy_rsv_go/modules/user"
+	usertype "phsy_rsv_go/modules/user_type"
 
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
@@ -37,8 +38,7 @@ func Connect() *gorm.DB {
 		MysqlDev(DbUser, DbPassword, DbHost, DbPort, DbName, Dbdriver)
 	}
 
-	Db.AutoMigrate(&book.Book{})
-	Db.AutoMigrate(&user.User{})
+	migrateDB()
 
 	return Db
 }
@@ -60,4 +60,10 @@ func SqlsvrDev(DbUser string, DbPassword string, DbHost string, DbName string, D
 		fmt.Println("Cannot connect to database ", Dbdriver)
 		log.Fatal("Database Connection Error")
 	}
+}
+
+func migrateDB() {
+	Db.AutoMigrate(&book.Book{})
+	Db.AutoMigrate(&user.User{})
+	Db.AutoMigrate(&usertype.UserType{})
 }

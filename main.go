@@ -17,6 +17,8 @@ func main() {
 	bookHandler := handler.NewBookHandler(bookRegistry)
 	userRegistry := registry.UserRegistry(db)
 	userHandler := handler.NewUserHandler(userRegistry)
+	userTypeRegistry := registry.UserTypeRegistry(db)
+	userTypeHandler := handler.NewUserTypeHandler(userTypeRegistry)
 
 	router := gin.Default()
 	router.Use(cors.Default())
@@ -39,6 +41,13 @@ func main() {
 	book.GET(":ID", bookHandler.GetBook)
 	book.PUT(":ID", bookHandler.UpdateBook)
 	book.DELETE(":ID", bookHandler.DeleteBook)
+
+	userType := v1.Group("user-types")
+	userType.GET("", userTypeHandler.GetUserTypes)
+	userType.POST("", userTypeHandler.PostUserType)
+	userType.GET(":ID", userTypeHandler.GetUserType)
+	userType.POST(":ID", userTypeHandler.UpdateUserType)
+	userType.DELETE(":ID", userTypeHandler.DeleteUserType)
 
 	router.Run(":85")
 }
