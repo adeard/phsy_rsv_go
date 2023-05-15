@@ -34,7 +34,6 @@ func (h *userHandler) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"token": token,
 	})
-	return
 }
 
 func (h *userHandler) GetUsers(c *gin.Context) {
@@ -43,6 +42,8 @@ func (h *userHandler) GetUsers(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"errors ": err.Error(),
 		})
+
+		return
 	}
 
 	var result []user.UserResponse
@@ -54,7 +55,6 @@ func (h *userHandler) GetUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"data": result,
 	})
-	return
 }
 
 func (h *userHandler) GetUser(c *gin.Context) {
@@ -75,7 +75,6 @@ func (h *userHandler) GetUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"data": userResponse,
 	})
-	return
 }
 
 func (h *userHandler) PostUser(c *gin.Context) {
@@ -111,7 +110,6 @@ func (h *userHandler) PostUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"data": userResponse,
 	})
-	return
 }
 
 func (h *userHandler) CurrentUser(c *gin.Context) {
@@ -133,7 +131,6 @@ func (h *userHandler) CurrentUser(c *gin.Context) {
 	userResponse := convertToUserResponse(u)
 
 	c.JSON(http.StatusOK, gin.H{"message": "success", "data": userResponse})
-	return
 }
 
 func (h *userHandler) UpdateUser(c *gin.Context) {
@@ -157,7 +154,6 @@ func (h *userHandler) UpdateUser(c *gin.Context) {
 	userResponse := convertToUserResponse(u)
 
 	c.JSON(http.StatusOK, gin.H{"message": "success", "data": userResponse})
-	return
 }
 
 func (h *userHandler) DeleteUser(c *gin.Context) {
@@ -173,7 +169,6 @@ func (h *userHandler) DeleteUser(c *gin.Context) {
 	userResponse := convertToUserResponse(u)
 
 	c.JSON(http.StatusOK, gin.H{"message": "success", "data": userResponse})
-	return
 }
 
 func convertToUserResponse(b user.User) user.UserResponse {
