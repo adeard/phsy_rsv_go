@@ -6,6 +6,7 @@ import (
 	"os"
 	"phsy_rsv_go/modules/book"
 	"phsy_rsv_go/modules/user"
+	userlevel "phsy_rsv_go/modules/user_level"
 	usertype "phsy_rsv_go/modules/user_type"
 
 	"github.com/joho/godotenv"
@@ -66,4 +67,5 @@ func migrateDB() {
 	Db.AutoMigrate(&book.Book{})
 	Db.AutoMigrate(&user.User{})
 	Db.AutoMigrate(&usertype.UserType{})
+	Db.AutoMigrate(&userlevel.UserLevel{})
 }
