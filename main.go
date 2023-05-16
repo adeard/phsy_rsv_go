@@ -17,6 +17,8 @@ func main() {
 	bookHandler := handler.NewBookHandler(bookRegistry)
 	userRegistry := registry.UserRegistry(db)
 	userHandler := handler.NewUserHandler(userRegistry)
+	rateRegistry := registry.RateRegistry(db)
+	rateHandler := handler.NewRateHandler(rateRegistry)
 	userTypeRegistry := registry.UserTypeRegistry(db)
 	userTypeHandler := handler.NewUserTypeHandler(userTypeRegistry)
 	userLevelRegistry := registry.UserLevelRegistry(db)
@@ -58,6 +60,13 @@ func main() {
 	userLevel.GET(":ID", userLevelHandler.GetUserLevel)
 	userLevel.POST(":ID", userLevelHandler.UpdateUserLevel)
 	userLevel.DELETE(":ID", userLevelHandler.DeleteUserLevel)
+
+	rate := v1.Group("rates")
+	rate.GET("", rateHandler.GetRates)
+	rate.POST("", rateHandler.PostRate)
+	rate.GET(":ID", rateHandler.GetRate)
+	rate.POST(":ID", rateHandler.UpdateRate)
+	rate.DELETE(":ID", rateHandler.DeleteRate)
 
 	router.Run(":85")
 }
