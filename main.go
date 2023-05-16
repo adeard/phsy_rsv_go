@@ -19,6 +19,8 @@ func main() {
 	userHandler := handler.NewUserHandler(userRegistry)
 	userTypeRegistry := registry.UserTypeRegistry(db)
 	userTypeHandler := handler.NewUserTypeHandler(userTypeRegistry)
+	userLevelRegistry := registry.UserLevelRegistry(db)
+	userLevelHandler := handler.NewUserLevelHandler(userLevelRegistry)
 
 	router := gin.Default()
 	router.Use(cors.Default())
@@ -28,6 +30,7 @@ func main() {
 	v1.POST("/register", userHandler.PostUser)
 
 	v1.Use(middlewares.JwtAuthMiddleware())
+
 	user := v1.Group("users")
 	user.GET("", userHandler.GetUsers)
 	user.GET(":ID", userHandler.GetUser)
@@ -48,6 +51,13 @@ func main() {
 	userType.GET(":ID", userTypeHandler.GetUserType)
 	userType.POST(":ID", userTypeHandler.UpdateUserType)
 	userType.DELETE(":ID", userTypeHandler.DeleteUserType)
+
+	userLevel := v1.Group("user-levels")
+	userLevel.GET("", userLevelHandler.GetUserLevels)
+	userLevel.POST("", userLevelHandler.PostUserLevel)
+	userLevel.GET(":ID", userLevelHandler.GetUserLevel)
+	userLevel.POST(":ID", userLevelHandler.UpdateUserLevel)
+	userLevel.DELETE(":ID", userLevelHandler.DeleteUserLevel)
 
 	router.Run(":85")
 }
