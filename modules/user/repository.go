@@ -28,7 +28,7 @@ func (r *repository) FindAll() ([]User, error) {
 
 func (r *repository) FindByID(ID int) (User, error) {
 	var user User
-	err := r.db.Where("id = ?", ID).First(&user).Error
+	err := r.db.Preload("UserType").Where("id = ?", ID).First(&user).Error
 
 	return user, err
 }
