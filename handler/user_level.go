@@ -31,7 +31,7 @@ func (h *userLevelHandler) GetUserLevels(c *gin.Context) {
 	var userLevelsResponse []userlevel.UserLevelResponse
 
 	for _, b := range userlevels {
-		userLevelResponse := convertToUserLevelResponse(b)
+		userLevelResponse := ConvertToUserLevelResponse(b)
 
 		userLevelsResponse = append(userLevelsResponse, userLevelResponse)
 	}
@@ -54,7 +54,7 @@ func (h *userLevelHandler) GetUserLevel(c *gin.Context) {
 		return
 	}
 
-	userLevelResponse := convertToUserLevelResponse(b)
+	userLevelResponse := ConvertToUserLevelResponse(b)
 
 	c.JSON(http.StatusOK, gin.H{
 		"data": userLevelResponse,
@@ -91,7 +91,7 @@ func (h *userLevelHandler) PostUserLevel(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"data": convertToUserLevelResponse(userlevel),
+		"data": ConvertToUserLevelResponse(userlevel),
 	})
 }
 
@@ -126,7 +126,7 @@ func (h *userLevelHandler) UpdateUserLevel(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"data": convertToUserLevelResponse(userlevel),
+		"data": ConvertToUserLevelResponse(userlevel),
 	})
 }
 
@@ -144,11 +144,11 @@ func (h *userLevelHandler) DeleteUserLevel(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusNoContent, gin.H{
-		"data": convertToUserLevelResponse(result),
+		"data": ConvertToUserLevelResponse(result),
 	})
 }
 
-func convertToUserLevelResponse(b userlevel.UserLevel) userlevel.UserLevelResponse {
+func ConvertToUserLevelResponse(b userlevel.UserLevel) userlevel.UserLevelResponse {
 	return userlevel.UserLevelResponse{
 		ID:       int(b.ID),
 		Name:     b.Name,
