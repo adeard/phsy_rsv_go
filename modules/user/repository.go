@@ -23,39 +23,51 @@ func NewRepository(db *gorm.DB) *repository {
 
 func (r *repository) FindAll() ([]User, error) {
 	var users []User
-	err := r.db.Find(&users).Error
+	err := r.db.
+		Find(&users).Error
 
 	return users, err
 }
 
 func (r *repository) FindByID(ID int) (User, error) {
 	var user User
-	err := r.db.Preload("UserType").Preload("UserLevel").Where("id = ?", ID).First(&user).Error
+	err := r.db.
+		Preload("UserType").
+		Preload("UserLevel").
+		Where("id = ?", ID).
+		First(&user).Error
 
 	return user, err
 }
 
 func (r *repository) FindByUsername(username string) (User, error) {
 	var user User
-	err := r.db.Where("username = ?", username).First(&user).Error
+	err := r.db.
+		Where("username = ?", username).
+		First(&user).Error
 
 	return user, err
 }
 
 func (r *repository) Create(user User) (User, error) {
-	err := r.db.Preload("UserType").Create(&user).Error
+	err := r.db.
+		Preload("UserType").
+		Create(&user).Error
 
 	return user, err
 }
 
 func (r *repository) Update(user User) (User, error) {
-	err := r.db.Save(&user).Error
+	err := r.db.
+		Save(&user).Error
 
 	return user, err
 }
 
 func (r *repository) Delete(user User) (User, error) {
-	err := r.db.Debug().Delete(&user).Error
+	err := r.db.
+		Debug().
+		Delete(&user).Error
 
 	return user, err
 }
