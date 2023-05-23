@@ -172,6 +172,7 @@ func (h *userHandler) DeleteUser(c *gin.Context) {
 }
 
 func convertToUserResponse(b user.User) user.UserResponse {
+	userTypeResponse := ConvertToUserTypeResponse(b.UserType)
 	return user.UserResponse{
 		ID:          int(b.ID),
 		Username:    b.Username,
@@ -184,5 +185,6 @@ func convertToUserResponse(b user.User) user.UserResponse {
 		Gender:      b.Gender,
 		BirthDate:   b.BirthDate,
 		IsActive:    b.IsActive,
+		UserType:    userTypeResponse,
 	}
 }

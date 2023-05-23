@@ -31,7 +31,7 @@ func (h *userTypeHandler) GetUserTypes(c *gin.Context) {
 	var userTypesResponse []usertype.UserTypeResponse
 
 	for _, b := range usertypes {
-		userTypeResponse := convertToUserTypeResponse(b)
+		userTypeResponse := ConvertToUserTypeResponse(b)
 
 		userTypesResponse = append(userTypesResponse, userTypeResponse)
 	}
@@ -54,7 +54,7 @@ func (h *userTypeHandler) GetUserType(c *gin.Context) {
 		return
 	}
 
-	userTypeResponse := convertToUserTypeResponse(b)
+	userTypeResponse := ConvertToUserTypeResponse(b)
 
 	c.JSON(http.StatusOK, gin.H{
 		"data": userTypeResponse,
@@ -91,7 +91,7 @@ func (h *userTypeHandler) PostUserType(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"data": convertToUserTypeResponse(usertype),
+		"data": ConvertToUserTypeResponse(usertype),
 	})
 }
 
@@ -126,7 +126,7 @@ func (h *userTypeHandler) UpdateUserType(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"data": convertToUserTypeResponse(usertype),
+		"data": ConvertToUserTypeResponse(usertype),
 	})
 }
 
@@ -144,11 +144,11 @@ func (h *userTypeHandler) DeleteUserType(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusNoContent, gin.H{
-		"data": convertToUserTypeResponse(result),
+		"data": ConvertToUserTypeResponse(result),
 	})
 }
 
-func convertToUserTypeResponse(b usertype.UserType) usertype.UserTypeResponse {
+func ConvertToUserTypeResponse(b usertype.UserType) usertype.UserTypeResponse {
 	return usertype.UserTypeResponse{
 		ID:       int(b.ID),
 		Name:     b.Name,
