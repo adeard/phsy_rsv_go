@@ -14,8 +14,15 @@ type rateHandler struct {
 	rateService rate.Service
 }
 
-func NewRateHandler(rateService rate.Service) *rateHandler {
-	return &rateHandler{rateService}
+func NewRateHandler(v1 *gin.RouterGroup, rateService rate.Service) {
+	handler := &rateHandler{rateService}
+
+	rate := v1.Group("rates")
+	rate.GET("", handler.GetRates)
+	rate.POST("", handler.PostRate)
+	rate.GET(":ID", handler.GetRate)
+	rate.POST(":ID", handler.UpdateRate)
+	rate.DELETE(":ID", handler.DeleteRate)
 }
 
 func (h *rateHandler) GetRates(c *gin.Context) {

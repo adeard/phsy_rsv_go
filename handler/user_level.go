@@ -14,8 +14,15 @@ type userLevelHandler struct {
 	userLevelService userlevel.Service
 }
 
-func NewUserLevelHandler(userLevelService userlevel.Service) *userLevelHandler {
-	return &userLevelHandler{userLevelService}
+func NewUserLevelHandler(v1 *gin.RouterGroup, userLevelService userlevel.Service) {
+	handler := &userLevelHandler{userLevelService}
+
+	userLevel := v1.Group("user-levels")
+	userLevel.GET("", handler.GetUserLevels)
+	userLevel.POST("", handler.PostUserLevel)
+	userLevel.GET(":ID", handler.GetUserLevel)
+	userLevel.POST(":ID", handler.UpdateUserLevel)
+	userLevel.DELETE(":ID", handler.DeleteUserLevel)
 }
 
 func (h *userLevelHandler) GetUserLevels(c *gin.Context) {

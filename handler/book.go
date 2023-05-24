@@ -14,8 +14,16 @@ type bookHandler struct {
 	bookService book.Service
 }
 
-func NewBookHandler(bookService book.Service) *bookHandler {
-	return &bookHandler{bookService}
+func NewBookHandler(v1 *gin.RouterGroup, bookService book.Service) {
+
+	handler := &bookHandler{bookService}
+
+	book := v1.Group("books")
+	book.GET("", handler.GetBooks)
+	book.POST("", handler.PostBook)
+	book.GET(":ID", handler.GetBook)
+	book.PUT(":ID", handler.UpdateBook)
+	book.DELETE(":ID", handler.DeleteBook)
 }
 
 func (h *bookHandler) GetBooks(c *gin.Context) {

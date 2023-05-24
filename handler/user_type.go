@@ -14,8 +14,15 @@ type userTypeHandler struct {
 	userTypeService usertype.Service
 }
 
-func NewUserTypeHandler(userTypeService usertype.Service) *userTypeHandler {
-	return &userTypeHandler{userTypeService}
+func NewUserTypeHandler(v1 *gin.RouterGroup, userTypeService usertype.Service) {
+	handler := &userTypeHandler{userTypeService}
+
+	userType := v1.Group("user-types")
+	userType.GET("", handler.GetUserTypes)
+	userType.POST("", handler.PostUserType)
+	userType.GET(":ID", handler.GetUserType)
+	userType.POST(":ID", handler.UpdateUserType)
+	userType.DELETE(":ID", handler.DeleteUserType)
 }
 
 func (h *userTypeHandler) GetUserTypes(c *gin.Context) {

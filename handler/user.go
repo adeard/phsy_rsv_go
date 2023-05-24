@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"phsy_rsv_go/middlewares"
 	"phsy_rsv_go/modules/user"
 	"phsy_rsv_go/utils"
 	"strconv"
@@ -15,8 +16,21 @@ type userHandler struct {
 	userService user.Service
 }
 
-func NewUserHandler(userService user.Service) *userHandler {
-	return &userHandler{userService}
+func NewUserHandler(v1 *gin.RouterGroup, userService user.Service) {
+
+	handler := &userHandler{userService}
+
+	v1.POST("/login", handler.Login)
+	v1.POST("/register", handler.PostUser)
+
+	v1.Use(middlewares.JwtAuthMiddleware())
+
+	user := v1.Group("users")
+	user.GET("", handler.GetUsers)
+	user.GET(":ID", handler.GetUser)
+	user.POST(":ID", handler.UpdateUser)
+	user.DELETE(":ID", handler.DeleteUser)
+	user.GET("logged", handler.CurrentUser)
 }
 
 func (h *userHandler) Login(c *gin.Context) {

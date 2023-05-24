@@ -13,60 +13,18 @@ import (
 func main() {
 	db := config.Connect()
 
-	bookRegistry := registry.BookRegistry(db)
-	bookHandler := handler.NewBookHandler(bookRegistry)
-	userRegistry := registry.UserRegistry(db)
-	userHandler := handler.NewUserHandler(userRegistry)
-	rateRegistry := registry.RateRegistry(db)
-	rateHandler := handler.NewRateHandler(rateRegistry)
-	userTypeRegistry := registry.UserTypeRegistry(db)
-	userTypeHandler := handler.NewUserTypeHandler(userTypeRegistry)
-	userLevelRegistry := registry.UserLevelRegistry(db)
-	userLevelHandler := handler.NewUserLevelHandler(userLevelRegistry)
-
 	router := gin.Default()
 	router.Use(cors.Default())
 
 	v1 := router.Group("api/v1")
-	v1.POST("/login", userHandler.Login)
-	v1.POST("/register", userHandler.PostUser)
+	handler.NewUserHandler(v1, registry.UserRegistry(db))
 
 	v1.Use(middlewares.JwtAuthMiddleware())
 
-	user := v1.Group("users")
-	user.GET("", userHandler.GetUsers)
-	user.GET(":ID", userHandler.GetUser)
-	user.POST(":ID", userHandler.UpdateUser)
-	user.DELETE(":ID", userHandler.DeleteUser)
-	user.GET("logged", userHandler.CurrentUser)
-
-	book := v1.Group("books")
-	book.GET("", bookHandler.GetBooks)
-	book.POST("", bookHandler.PostBook)
-	book.GET(":ID", bookHandler.GetBook)
-	book.PUT(":ID", bookHandler.UpdateBook)
-	book.DELETE(":ID", bookHandler.DeleteBook)
-
-	userType := v1.Group("user-types")
-	userType.GET("", userTypeHandler.GetUserTypes)
-	userType.POST("", userTypeHandler.PostUserType)
-	userType.GET(":ID", userTypeHandler.GetUserType)
-	userType.POST(":ID", userTypeHandler.UpdateUserType)
-	userType.DELETE(":ID", userTypeHandler.DeleteUserType)
-
-	userLevel := v1.Group("user-levels")
-	userLevel.GET("", userLevelHandler.GetUserLevels)
-	userLevel.POST("", userLevelHandler.PostUserLevel)
-	userLevel.GET(":ID", userLevelHandler.GetUserLevel)
-	userLevel.POST(":ID", userLevelHandler.UpdateUserLevel)
-	userLevel.DELETE(":ID", userLevelHandler.DeleteUserLevel)
-
-	rate := v1.Group("rates")
-	rate.GET("", rateHandler.GetRates)
-	rate.POST("", rateHandler.PostRate)
-	rate.GET(":ID", rateHandler.GetRate)
-	rate.POST(":ID", rateHandler.UpdateRate)
-	rate.DELETE(":ID", rateHandler.DeleteRate)
+	handler.NewBookHandler(v1, registry.BookRegistry(db))
+	handler.NewRateHandler(v1, registry.RateRegistry(db))
+	handler.NewUserTypeHandler(v1, registry.UserTypeRegistry(db))
+	handler.NewUserLevelHandler(v1, registry.UserLevelRegistry(db))
 
 	router.Run(":85")
 }
