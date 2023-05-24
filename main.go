@@ -24,6 +24,7 @@ func main() {
 	handler.NewBookHandler(v1, registry.BookRegistry(db))
 	handler.NewRateHandler(v1, registry.RateRegistry(db))
 	handler.NewUserTypeHandler(v1, registry.UserTypeRegistry(db))
+	handler.NewProvinceHandler(v1, registry.ProvinceRegistry(db))
 	handler.NewUserLevelHandler(v1, registry.UserLevelRegistry(db))
 
 	router.Run(":85")

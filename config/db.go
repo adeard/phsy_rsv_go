@@ -5,10 +5,12 @@ import (
 	"log"
 	"os"
 	"phsy_rsv_go/modules/book"
+	"phsy_rsv_go/modules/province"
 	"phsy_rsv_go/modules/rate"
 	"phsy_rsv_go/modules/user"
 	userlevel "phsy_rsv_go/modules/user_level"
 	usertype "phsy_rsv_go/modules/user_type"
+	"phsy_rsv_go/seeder"
 
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
@@ -71,45 +73,11 @@ func migrateDB() {
 	Db.AutoMigrate(&usertype.UserType{})
 	Db.AutoMigrate(&userlevel.UserLevel{})
 	Db.AutoMigrate(&rate.Rate{})
+	Db.AutoMigrate(&province.Province{})
 }
 
 func seedDB() {
-	InsertUserLevel()
-	InsertUserType()
-}
-
-func InsertUserLevel() {
-	var total int64
-	var ul userlevel.UserLevel
-	Db.Model(&ul).Count(&total)
-	if total == 0 {
-		var data = []userlevel.UserLevel{
-			{
-				Name: "admin", IsActive: true,
-			},
-			{
-				Name: "user", IsActive: true,
-			},
-		}
-
-		Db.Create(&data)
-	}
-}
-
-func InsertUserType() {
-	var total int64
-	var ut usertype.UserType
-	Db.Model(&ut).Count(&total)
-	if total == 0 {
-		var data = []usertype.UserType{
-			{
-				Name: "patient", IsActive: true,
-			},
-			{
-				Name: "staff", IsActive: true,
-			},
-		}
-
-		Db.Create(&data)
-	}
+	seeder.InsertUserLevel(Db)
+	seeder.InsertUserType(Db)
+	seeder.InsertProvince(Db)
 }
