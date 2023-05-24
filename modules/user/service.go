@@ -2,6 +2,7 @@ package user
 
 import (
 	"html"
+	"phsy_rsv_go/domain"
 	"phsy_rsv_go/utils"
 	"strings"
 
@@ -9,12 +10,12 @@ import (
 )
 
 type Service interface {
-	FindAll() ([]User, error)
-	Delete(ID int) (User, error)
-	FindByID(ID int) (User, error)
-	Login(loginrequest LoginRequest) (string, error)
-	Create(registerrequest RegisterRequest) (User, error)
-	Update(ID int, updaterequest UpdateRequest) (User, error)
+	FindAll() ([]domain.User, error)
+	Delete(ID int) (domain.User, error)
+	FindByID(ID int) (domain.User, error)
+	Login(loginrequest domain.LoginRequest) (string, error)
+	Create(registerrequest domain.RegisterRequest) (domain.User, error)
+	Update(ID int, updaterequest domain.UpdateRequest) (domain.User, error)
 }
 
 type service struct {
@@ -25,21 +26,21 @@ func NewService(repository Repository) *service {
 	return &service{repository}
 }
 
-func (s *service) FindAll() ([]User, error) {
+func (s *service) FindAll() ([]domain.User, error) {
 	users, err := s.repository.FindAll()
 
 	return users, err
 }
 
-func (s *service) FindByID(ID int) (User, error) {
+func (s *service) FindByID(ID int) (domain.User, error) {
 	user, err := s.repository.FindByID(ID)
 
 	return user, err
 }
 
-func (s *service) Create(registerrequest RegisterRequest) (User, error) {
+func (s *service) Create(registerrequest domain.RegisterRequest) (domain.User, error) {
 
-	newUser, _ := hashedUser(User{
+	newUser, _ := hashedUser(domain.User{
 		Username: registerrequest.Username,
 		Password: registerrequest.Password,
 	})
@@ -49,7 +50,7 @@ func (s *service) Create(registerrequest RegisterRequest) (User, error) {
 	return user, err
 }
 
-func (s *service) Login(loginrequest LoginRequest) (string, error) {
+func (s *service) Login(loginrequest domain.LoginRequest) (string, error) {
 
 	userCheck, err := s.repository.FindByUsername(loginrequest.Username)
 	if err != nil {
@@ -70,11 +71,11 @@ func (s *service) Login(loginrequest LoginRequest) (string, error) {
 	return token, nil
 }
 
-func (s *service) Update(ID int, updaterequest UpdateRequest) (User, error) {
+func (s *service) Update(ID int, updaterequest domain.UpdateRequest) (domain.User, error) {
 
 	user, err := s.repository.FindByID(ID)
 	if err != nil {
-		return User{}, err
+		return domain.User{}, err
 	}
 
 	user.Address = updaterequest.Address
@@ -90,22 +91,22 @@ func (s *service) Update(ID int, updaterequest UpdateRequest) (User, error) {
 	return newuser, err
 }
 
-func (s *service) Delete(ID int) (User, error) {
+func (s *service) Delete(ID int) (domain.User, error) {
 
 	user, err := s.repository.FindByID(ID)
 	if err != nil {
-		return User{}, err
+		return domain.User{}, err
 	}
 
 	user, err = s.repository.Delete(user)
 	if err != nil {
-		return User{}, err
+		return domain.User{}, err
 	}
 
 	return user, err
 }
 
-func hashedUser(u User) (User, error) {
+func hashedUser(u domain.User) (domain.User, error) {
 
 	//turn password into hash
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)

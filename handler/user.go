@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"phsy_rsv_go/domain"
 	"phsy_rsv_go/middlewares"
 	"phsy_rsv_go/modules/user"
 	"phsy_rsv_go/utils"
@@ -34,7 +35,7 @@ func NewUserHandler(v1 *gin.RouterGroup, userService user.Service) {
 }
 
 func (h *userHandler) Login(c *gin.Context) {
-	var loginInput user.LoginRequest
+	var loginInput domain.LoginRequest
 
 	c.ShouldBind(&loginInput)
 
@@ -60,7 +61,7 @@ func (h *userHandler) GetUsers(c *gin.Context) {
 		return
 	}
 
-	var result []user.UserResponse
+	var result []domain.UserResponse
 
 	for _, user := range users {
 		result = append(result, convertToUserResponse(user))
@@ -92,7 +93,7 @@ func (h *userHandler) GetUser(c *gin.Context) {
 }
 
 func (h *userHandler) PostUser(c *gin.Context) {
-	var userInput user.RegisterRequest
+	var userInput domain.RegisterRequest
 
 	err := c.ShouldBindJSON(&userInput)
 	if err != nil {
@@ -148,7 +149,7 @@ func (h *userHandler) CurrentUser(c *gin.Context) {
 }
 
 func (h *userHandler) UpdateUser(c *gin.Context) {
-	var userInput user.UpdateRequest
+	var userInput domain.UpdateRequest
 
 	user_id := c.Param("ID")
 	id, _ := strconv.Atoi(user_id)
@@ -185,10 +186,10 @@ func (h *userHandler) DeleteUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "success", "data": userResponse})
 }
 
-func convertToUserResponse(b user.User) user.UserResponse {
+func convertToUserResponse(b domain.User) domain.UserResponse {
 	userTypeResponse := ConvertToUserTypeResponse(b.UserType)
 	userLevelResponse := ConvertToUserLevelResponse(b.UserLevel)
-	return user.UserResponse{
+	return domain.UserResponse{
 		ID:          int(b.ID),
 		Username:    b.Username,
 		UserTypeId:  b.UserTypeId,

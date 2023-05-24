@@ -1,11 +1,13 @@
 package userlevel
 
+import "phsy_rsv_go/domain"
+
 type Service interface {
-	FindAll() ([]UserLevel, error)
-	Delete(ID int) (UserLevel, error)
-	FindByID(ID int) (UserLevel, error)
-	Create(userlevelrequest UserLevelRequest) (UserLevel, error)
-	Update(ID int, userlevelrequest UserLevelRequest) (UserLevel, error)
+	FindAll() ([]domain.UserLevel, error)
+	Delete(ID int) (domain.UserLevel, error)
+	FindByID(ID int) (domain.UserLevel, error)
+	Create(userlevelrequest domain.UserLevelRequest) (domain.UserLevel, error)
+	Update(ID int, userlevelrequest domain.UserLevelRequest) (domain.UserLevel, error)
 }
 
 type service struct {
@@ -16,21 +18,21 @@ func NewService(repository Repository) *service {
 	return &service{repository}
 }
 
-func (s *service) FindAll() ([]UserLevel, error) {
+func (s *service) FindAll() ([]domain.UserLevel, error) {
 	userlevels, err := s.repository.FindAll()
 
 	return userlevels, err
 }
 
-func (s *service) FindByID(ID int) (UserLevel, error) {
+func (s *service) FindByID(ID int) (domain.UserLevel, error) {
 	userlevel, err := s.repository.FindByID(ID)
 
 	return userlevel, err
 }
 
-func (s *service) Create(userlevelrequest UserLevelRequest) (UserLevel, error) {
+func (s *service) Create(userlevelrequest domain.UserLevelRequest) (domain.UserLevel, error) {
 
-	newUserLevel := UserLevel{
+	newUserLevel := domain.UserLevel{
 		Name:     userlevelrequest.Name,
 		IsActive: userlevelrequest.IsActive,
 	}
@@ -40,11 +42,11 @@ func (s *service) Create(userlevelrequest UserLevelRequest) (UserLevel, error) {
 	return userlevel, err
 }
 
-func (s *service) Update(ID int, userlevelrequest UserLevelRequest) (UserLevel, error) {
+func (s *service) Update(ID int, userlevelrequest domain.UserLevelRequest) (domain.UserLevel, error) {
 
 	userlevel, err := s.repository.FindByID(ID)
 	if err != nil {
-		return UserLevel{}, err
+		return domain.UserLevel{}, err
 	}
 
 	userlevel.Name = userlevelrequest.Name
@@ -55,16 +57,16 @@ func (s *service) Update(ID int, userlevelrequest UserLevelRequest) (UserLevel, 
 	return newuserlevel, err
 }
 
-func (s *service) Delete(ID int) (UserLevel, error) {
+func (s *service) Delete(ID int) (domain.UserLevel, error) {
 
 	userlevel, err := s.repository.FindByID(ID)
 	if err != nil {
-		return UserLevel{}, err
+		return domain.UserLevel{}, err
 	}
 
 	userlevel, err = s.repository.Delete(userlevel)
 	if err != nil {
-		return UserLevel{}, err
+		return domain.UserLevel{}, err
 	}
 
 	return userlevel, err

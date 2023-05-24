@@ -1,17 +1,17 @@
 package seeder
 
 import (
-	usertype "phsy_rsv_go/modules/user_type"
+	"phsy_rsv_go/domain"
 
 	"gorm.io/gorm"
 )
 
 func InsertUserType(Db *gorm.DB) {
 	var total int64
-	var ut usertype.UserType
+	var ut domain.UserType
 	Db.Model(&ut).Count(&total)
 	if total == 0 {
-		var data = []usertype.UserType{
+		var data = []domain.UserType{
 			{
 				Name: "patient", IsActive: true,
 			},

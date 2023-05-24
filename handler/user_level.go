@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"phsy_rsv_go/domain"
 	userlevel "phsy_rsv_go/modules/user_level"
 	"strconv"
 
@@ -35,7 +36,7 @@ func (h *userLevelHandler) GetUserLevels(c *gin.Context) {
 		return
 	}
 
-	var userLevelsResponse []userlevel.UserLevelResponse
+	var userLevelsResponse []domain.UserLevelResponse
 
 	for _, b := range userlevels {
 		userLevelResponse := ConvertToUserLevelResponse(b)
@@ -69,7 +70,7 @@ func (h *userLevelHandler) GetUserLevel(c *gin.Context) {
 }
 
 func (h *userLevelHandler) PostUserLevel(c *gin.Context) {
-	var userLevelInput userlevel.UserLevelRequest
+	var userLevelInput domain.UserLevelRequest
 
 	err := c.ShouldBindJSON(&userLevelInput)
 	if err != nil {
@@ -103,7 +104,7 @@ func (h *userLevelHandler) PostUserLevel(c *gin.Context) {
 }
 
 func (h *userLevelHandler) UpdateUserLevel(c *gin.Context) {
-	var userLevelInput userlevel.UserLevelRequest
+	var userLevelInput domain.UserLevelRequest
 
 	err := c.ShouldBindJSON(&userLevelInput)
 	if err != nil {
@@ -155,8 +156,8 @@ func (h *userLevelHandler) DeleteUserLevel(c *gin.Context) {
 	})
 }
 
-func ConvertToUserLevelResponse(b userlevel.UserLevel) userlevel.UserLevelResponse {
-	return userlevel.UserLevelResponse{
+func ConvertToUserLevelResponse(b domain.UserLevel) domain.UserLevelResponse {
+	return domain.UserLevelResponse{
 		ID:       int(b.ID),
 		Name:     b.Name,
 		IsActive: b.IsActive,

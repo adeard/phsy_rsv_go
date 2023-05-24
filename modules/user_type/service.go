@@ -1,11 +1,13 @@
 package usertype
 
+import "phsy_rsv_go/domain"
+
 type Service interface {
-	FindAll() ([]UserType, error)
-	Delete(ID int) (UserType, error)
-	FindByID(ID int) (UserType, error)
-	Create(usertyperequest UserTypeRequest) (UserType, error)
-	Update(ID int, usertyperequest UserTypeRequest) (UserType, error)
+	FindAll() ([]domain.UserType, error)
+	Delete(ID int) (domain.UserType, error)
+	FindByID(ID int) (domain.UserType, error)
+	Create(usertyperequest domain.UserTypeRequest) (domain.UserType, error)
+	Update(ID int, usertyperequest domain.UserTypeRequest) (domain.UserType, error)
 }
 
 type service struct {
@@ -16,21 +18,21 @@ func NewService(repository Repository) *service {
 	return &service{repository}
 }
 
-func (s *service) FindAll() ([]UserType, error) {
+func (s *service) FindAll() ([]domain.UserType, error) {
 	usertypes, err := s.repository.FindAll()
 
 	return usertypes, err
 }
 
-func (s *service) FindByID(ID int) (UserType, error) {
+func (s *service) FindByID(ID int) (domain.UserType, error) {
 	usertype, err := s.repository.FindByID(ID)
 
 	return usertype, err
 }
 
-func (s *service) Create(usertyperequest UserTypeRequest) (UserType, error) {
+func (s *service) Create(usertyperequest domain.UserTypeRequest) (domain.UserType, error) {
 
-	newUserType := UserType{
+	newUserType := domain.UserType{
 		Name:     usertyperequest.Name,
 		IsActive: usertyperequest.IsActive,
 	}
@@ -40,11 +42,11 @@ func (s *service) Create(usertyperequest UserTypeRequest) (UserType, error) {
 	return usertype, err
 }
 
-func (s *service) Update(ID int, usertyperequest UserTypeRequest) (UserType, error) {
+func (s *service) Update(ID int, usertyperequest domain.UserTypeRequest) (domain.UserType, error) {
 
 	usertype, err := s.repository.FindByID(ID)
 	if err != nil {
-		return UserType{}, err
+		return domain.UserType{}, err
 	}
 
 	usertype.Name = usertyperequest.Name
@@ -55,16 +57,16 @@ func (s *service) Update(ID int, usertyperequest UserTypeRequest) (UserType, err
 	return newuser, err
 }
 
-func (s *service) Delete(ID int) (UserType, error) {
+func (s *service) Delete(ID int) (domain.UserType, error) {
 
 	usertype, err := s.repository.FindByID(ID)
 	if err != nil {
-		return UserType{}, err
+		return domain.UserType{}, err
 	}
 
 	usertype, err = s.repository.Delete(usertype)
 	if err != nil {
-		return UserType{}, err
+		return domain.UserType{}, err
 	}
 
 	return usertype, err

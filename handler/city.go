@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"phsy_rsv_go/domain"
 	"phsy_rsv_go/modules/city"
 	"strconv"
 
@@ -35,7 +36,7 @@ func (h *cityHandler) GetAll(c *gin.Context) {
 		return
 	}
 
-	var citiesResponse []city.CityResponse
+	var citiesResponse []domain.CityResponse
 
 	for _, b := range cities {
 		cityResponse := ConvertToCityResponse(b)
@@ -69,7 +70,7 @@ func (h *cityHandler) GetDetail(c *gin.Context) {
 }
 
 func (h *cityHandler) Post(c *gin.Context) {
-	var cityinput city.CityRequest
+	var cityinput domain.CityRequest
 
 	err := c.ShouldBindJSON(&cityinput)
 	if err != nil {
@@ -103,7 +104,7 @@ func (h *cityHandler) Post(c *gin.Context) {
 }
 
 func (h *cityHandler) Update(c *gin.Context) {
-	var cityInput city.CityRequest
+	var cityInput domain.CityRequest
 
 	err := c.ShouldBindJSON(&cityInput)
 	if err != nil {
@@ -155,11 +156,14 @@ func (h *cityHandler) Delete(c *gin.Context) {
 	})
 }
 
-func ConvertToCityResponse(b city.City) city.CityResponse {
-	return city.CityResponse{
+func ConvertToCityResponse(b domain.City) domain.CityResponse {
+	provinceResponse := ConvertToProvinceResponse(b.Province)
+
+	return domain.CityResponse{
 		ID:         int(b.ID),
 		Name:       b.Name,
 		IsActive:   b.IsActive,
 		ProvinceId: b.ProvinceId,
+		Province:   provinceResponse,
 	}
 }

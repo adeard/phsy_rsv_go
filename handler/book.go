@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"phsy_rsv_go/domain"
 	"phsy_rsv_go/modules/book"
 	"strconv"
 
@@ -34,7 +35,7 @@ func (h *bookHandler) GetBooks(c *gin.Context) {
 		})
 	}
 
-	var booksResponse []book.BookResponse
+	var booksResponse []domain.BookResponse
 
 	for _, b := range books {
 		bookResponse := convertToBookResponse(b)
@@ -66,7 +67,7 @@ func (h *bookHandler) GetBook(c *gin.Context) {
 }
 
 func (h *bookHandler) PostBook(c *gin.Context) {
-	var bookInput book.BookRequest
+	var bookInput domain.BookRequest
 
 	err := c.ShouldBindJSON(&bookInput)
 	if err != nil {
@@ -96,7 +97,7 @@ func (h *bookHandler) PostBook(c *gin.Context) {
 }
 
 func (h *bookHandler) UpdateBook(c *gin.Context) {
-	var bookInput book.BookRequest
+	var bookInput domain.BookRequest
 
 	err := c.ShouldBindJSON(&bookInput)
 	if err != nil {
@@ -144,8 +145,8 @@ func (h *bookHandler) DeleteBook(c *gin.Context) {
 	})
 }
 
-func convertToBookResponse(b book.Book) book.BookResponse {
-	return book.BookResponse{
+func convertToBookResponse(b domain.Book) domain.BookResponse {
+	return domain.BookResponse{
 		ID:    b.ID,
 		Title: b.Title,
 		Price: b.Price,

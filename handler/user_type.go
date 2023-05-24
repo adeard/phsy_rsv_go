@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"phsy_rsv_go/domain"
 	usertype "phsy_rsv_go/modules/user_type"
 	"strconv"
 
@@ -35,7 +36,7 @@ func (h *userTypeHandler) GetUserTypes(c *gin.Context) {
 		return
 	}
 
-	var userTypesResponse []usertype.UserTypeResponse
+	var userTypesResponse []domain.UserTypeResponse
 
 	for _, b := range usertypes {
 		userTypeResponse := ConvertToUserTypeResponse(b)
@@ -69,7 +70,7 @@ func (h *userTypeHandler) GetUserType(c *gin.Context) {
 }
 
 func (h *userTypeHandler) PostUserType(c *gin.Context) {
-	var userTypeInput usertype.UserTypeRequest
+	var userTypeInput domain.UserTypeRequest
 
 	err := c.ShouldBindJSON(&userTypeInput)
 	if err != nil {
@@ -103,7 +104,7 @@ func (h *userTypeHandler) PostUserType(c *gin.Context) {
 }
 
 func (h *userTypeHandler) UpdateUserType(c *gin.Context) {
-	var userTypeInput usertype.UserTypeRequest
+	var userTypeInput domain.UserTypeRequest
 
 	err := c.ShouldBindJSON(&userTypeInput)
 	if err != nil {
@@ -155,8 +156,8 @@ func (h *userTypeHandler) DeleteUserType(c *gin.Context) {
 	})
 }
 
-func ConvertToUserTypeResponse(b usertype.UserType) usertype.UserTypeResponse {
-	return usertype.UserTypeResponse{
+func ConvertToUserTypeResponse(b domain.UserType) domain.UserTypeResponse {
+	return domain.UserTypeResponse{
 		ID:       int(b.ID),
 		Name:     b.Name,
 		IsActive: b.IsActive,

@@ -1,11 +1,13 @@
 package province
 
+import "phsy_rsv_go/domain"
+
 type Service interface {
-	FindAll() ([]Province, error)
-	Delete(ID int) (Province, error)
-	FindByID(ID int) (Province, error)
-	Create(provincerequest ProvinceRequest) (Province, error)
-	Update(ID int, provincerequest ProvinceRequest) (Province, error)
+	FindAll() ([]domain.Province, error)
+	Delete(ID int) (domain.Province, error)
+	FindByID(ID int) (domain.Province, error)
+	Create(provincerequest domain.ProvinceRequest) (domain.Province, error)
+	Update(ID int, provincerequest domain.ProvinceRequest) (domain.Province, error)
 }
 
 type service struct {
@@ -16,21 +18,21 @@ func NewService(repository Repository) *service {
 	return &service{repository}
 }
 
-func (s *service) FindAll() ([]Province, error) {
+func (s *service) FindAll() ([]domain.Province, error) {
 	provinces, err := s.repository.FindAll()
 
 	return provinces, err
 }
 
-func (s *service) FindByID(ID int) (Province, error) {
+func (s *service) FindByID(ID int) (domain.Province, error) {
 	province, err := s.repository.FindByID(ID)
 
 	return province, err
 }
 
-func (s *service) Create(provincerequest ProvinceRequest) (Province, error) {
+func (s *service) Create(provincerequest domain.ProvinceRequest) (domain.Province, error) {
 
-	newProvince := Province{
+	newProvince := domain.Province{
 		Name:     provincerequest.Name,
 		IsActive: provincerequest.IsActive,
 	}
@@ -40,11 +42,11 @@ func (s *service) Create(provincerequest ProvinceRequest) (Province, error) {
 	return province, err
 }
 
-func (s *service) Update(ID int, provincerequest ProvinceRequest) (Province, error) {
+func (s *service) Update(ID int, provincerequest domain.ProvinceRequest) (domain.Province, error) {
 
 	province, err := s.repository.FindByID(ID)
 	if err != nil {
-		return Province{}, err
+		return domain.Province{}, err
 	}
 
 	province.Name = provincerequest.Name
@@ -55,16 +57,16 @@ func (s *service) Update(ID int, provincerequest ProvinceRequest) (Province, err
 	return newprovince, err
 }
 
-func (s *service) Delete(ID int) (Province, error) {
+func (s *service) Delete(ID int) (domain.Province, error) {
 
 	province, err := s.repository.FindByID(ID)
 	if err != nil {
-		return Province{}, err
+		return domain.Province{}, err
 	}
 
 	province, err = s.repository.Delete(province)
 	if err != nil {
-		return Province{}, err
+		return domain.Province{}, err
 	}
 
 	return province, err

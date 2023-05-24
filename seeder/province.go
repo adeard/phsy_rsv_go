@@ -1,17 +1,17 @@
 package seeder
 
 import (
-	"phsy_rsv_go/modules/province"
+	"phsy_rsv_go/domain"
 
 	"gorm.io/gorm"
 )
 
 func InsertProvince(Db *gorm.DB) {
 	var total int64
-	var ut province.Province
+	var ut domain.Province
 	Db.Model(&ut).Count(&total)
 	if total == 0 {
-		var data = []province.Province{
+		var data = []domain.Province{
 			{
 				Name: "Nanggroe Aceh Darussalam", IsActive: true,
 			},

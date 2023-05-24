@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"phsy_rsv_go/domain"
 	"phsy_rsv_go/modules/province"
 	"strconv"
 
@@ -35,7 +36,7 @@ func (h *provinceHandler) GetAll(c *gin.Context) {
 		return
 	}
 
-	var provincesResponse []province.ProvinceResponse
+	var provincesResponse []domain.ProvinceResponse
 
 	for _, b := range provinces {
 		provinceResponse := ConvertToProvinceResponse(b)
@@ -69,7 +70,7 @@ func (h *provinceHandler) GetDetail(c *gin.Context) {
 }
 
 func (h *provinceHandler) Post(c *gin.Context) {
-	var provinceInput province.ProvinceRequest
+	var provinceInput domain.ProvinceRequest
 
 	err := c.ShouldBindJSON(&provinceInput)
 	if err != nil {
@@ -103,7 +104,7 @@ func (h *provinceHandler) Post(c *gin.Context) {
 }
 
 func (h *provinceHandler) Update(c *gin.Context) {
-	var provinceInput province.ProvinceRequest
+	var provinceInput domain.ProvinceRequest
 
 	err := c.ShouldBindJSON(&provinceInput)
 	if err != nil {
@@ -155,8 +156,8 @@ func (h *provinceHandler) Delete(c *gin.Context) {
 	})
 }
 
-func ConvertToProvinceResponse(b province.Province) province.ProvinceResponse {
-	return province.ProvinceResponse{
+func ConvertToProvinceResponse(b domain.Province) domain.ProvinceResponse {
+	return domain.ProvinceResponse{
 		ID:       int(b.ID),
 		Name:     b.Name,
 		IsActive: b.IsActive,

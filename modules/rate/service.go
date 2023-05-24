@@ -1,11 +1,13 @@
 package rate
 
+import "phsy_rsv_go/domain"
+
 type Service interface {
-	FindAll() ([]Rate, error)
-	Delete(ID int) (Rate, error)
-	FindByID(ID int) (Rate, error)
-	Create(raterequest RateRequest) (Rate, error)
-	Update(ID int, raterequest RateRequest) (Rate, error)
+	FindAll() ([]domain.Rate, error)
+	Delete(ID int) (domain.Rate, error)
+	FindByID(ID int) (domain.Rate, error)
+	Create(raterequest domain.RateRequest) (domain.Rate, error)
+	Update(ID int, raterequest domain.RateRequest) (domain.Rate, error)
 }
 
 type service struct {
@@ -16,21 +18,21 @@ func NewService(repository Repository) *service {
 	return &service{repository}
 }
 
-func (s *service) FindAll() ([]Rate, error) {
+func (s *service) FindAll() ([]domain.Rate, error) {
 	rates, err := s.repository.FindAll()
 
 	return rates, err
 }
 
-func (s *service) FindByID(ID int) (Rate, error) {
+func (s *service) FindByID(ID int) (domain.Rate, error) {
 	rate, err := s.repository.FindByID(ID)
 
 	return rate, err
 }
 
-func (s *service) Create(raterequest RateRequest) (Rate, error) {
+func (s *service) Create(raterequest domain.RateRequest) (domain.Rate, error) {
 
-	newRate := Rate{
+	newRate := domain.Rate{
 		UserId: raterequest.UserId,
 		Rates:  raterequest.Rates,
 	}
@@ -40,11 +42,11 @@ func (s *service) Create(raterequest RateRequest) (Rate, error) {
 	return rate, err
 }
 
-func (s *service) Update(ID int, raterequest RateRequest) (Rate, error) {
+func (s *service) Update(ID int, raterequest domain.RateRequest) (domain.Rate, error) {
 
 	rate, err := s.repository.FindByID(ID)
 	if err != nil {
-		return Rate{}, err
+		return domain.Rate{}, err
 	}
 
 	rate.UserId = raterequest.UserId
@@ -55,16 +57,16 @@ func (s *service) Update(ID int, raterequest RateRequest) (Rate, error) {
 	return newrate, err
 }
 
-func (s *service) Delete(ID int) (Rate, error) {
+func (s *service) Delete(ID int) (domain.Rate, error) {
 
 	rate, err := s.repository.FindByID(ID)
 	if err != nil {
-		return Rate{}, err
+		return domain.Rate{}, err
 	}
 
 	rate, err = s.repository.Delete(rate)
 	if err != nil {
-		return Rate{}, err
+		return domain.Rate{}, err
 	}
 
 	return rate, err

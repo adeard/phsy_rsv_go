@@ -1,17 +1,17 @@
 package seeder
 
 import (
-	"phsy_rsv_go/modules/city"
+	"phsy_rsv_go/domain"
 
 	"gorm.io/gorm"
 )
 
 func InsertCity(Db *gorm.DB) {
 	var total int64
-	var ul city.City
+	var ul domain.City
 	Db.Model(&ul).Count(&total)
 	if total == 0 {
-		var data = []city.City{
+		var data = []domain.City{
 			{
 				Name: "Jakarta Timur", IsActive: true, ProvinceId: 17,
 			},

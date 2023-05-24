@@ -1,13 +1,17 @@
 package city
 
-import "gorm.io/gorm"
+import (
+	"phsy_rsv_go/domain"
+
+	"gorm.io/gorm"
+)
 
 type Repository interface {
-	FindAll() ([]City, error)
-	FindByID(ID int) (City, error)
-	Delete(city City) (City, error)
-	Create(city City) (City, error)
-	Update(city City) (City, error)
+	FindAll() ([]domain.City, error)
+	FindByID(ID int) (domain.City, error)
+	Delete(city domain.City) (domain.City, error)
+	Create(city domain.City) (domain.City, error)
+	Update(city domain.City) (domain.City, error)
 }
 
 type repository struct {
@@ -18,33 +22,33 @@ func NewRepository(db *gorm.DB) *repository {
 	return &repository{db}
 }
 
-func (r *repository) FindAll() ([]City, error) {
-	var cities []City
+func (r *repository) FindAll() ([]domain.City, error) {
+	var cities []domain.City
 	err := r.db.Find(&cities).Error
 
 	return cities, err
 }
 
-func (r *repository) FindByID(ID int) (City, error) {
-	var city City
-	err := r.db.Where("id = ?", ID).First(&city).Error
+func (r *repository) FindByID(ID int) (domain.City, error) {
+	var city domain.City
+	err := r.db.Preload("Province").Where("id = ?", ID).First(&city).Error
 
 	return city, err
 }
 
-func (r *repository) Create(city City) (City, error) {
+func (r *repository) Create(city domain.City) (domain.City, error) {
 	err := r.db.Create(&city).Error
 
 	return city, err
 }
 
-func (r *repository) Update(city City) (City, error) {
+func (r *repository) Update(city domain.City) (domain.City, error) {
 	err := r.db.Debug().Save(&city).Error
 
 	return city, err
 }
 
-func (r *repository) Delete(city City) (City, error) {
+func (r *repository) Delete(city domain.City) (domain.City, error) {
 	err := r.db.Debug().Delete(&city).Error
 
 	return city, err

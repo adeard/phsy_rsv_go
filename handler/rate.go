@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"phsy_rsv_go/domain"
 	"phsy_rsv_go/modules/rate"
 	"strconv"
 
@@ -35,7 +36,7 @@ func (h *rateHandler) GetRates(c *gin.Context) {
 		return
 	}
 
-	var ratesResponse []rate.RateResponse
+	var ratesResponse []domain.RateResponse
 
 	for _, b := range rates {
 		rateResponse := convertToRateResponse(b)
@@ -69,7 +70,7 @@ func (h *rateHandler) GetRate(c *gin.Context) {
 }
 
 func (h *rateHandler) PostRate(c *gin.Context) {
-	var rateInput rate.RateRequest
+	var rateInput domain.RateRequest
 
 	err := c.ShouldBindJSON(&rateInput)
 	if err != nil {
@@ -103,7 +104,7 @@ func (h *rateHandler) PostRate(c *gin.Context) {
 }
 
 func (h *rateHandler) UpdateRate(c *gin.Context) {
-	var rateInput rate.RateRequest
+	var rateInput domain.RateRequest
 
 	err := c.ShouldBindJSON(&rateInput)
 	if err != nil {
@@ -155,8 +156,8 @@ func (h *rateHandler) DeleteRate(c *gin.Context) {
 	})
 }
 
-func convertToRateResponse(b rate.Rate) rate.RateResponse {
-	return rate.RateResponse{
+func convertToRateResponse(b domain.Rate) domain.RateResponse {
+	return domain.RateResponse{
 		ID:     int(b.ID),
 		UserId: b.UserId,
 		Rates:  b.Rates,

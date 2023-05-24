@@ -1,13 +1,17 @@
 package book
 
-import "gorm.io/gorm"
+import (
+	"phsy_rsv_go/domain"
+
+	"gorm.io/gorm"
+)
 
 type Repository interface {
-	FindAll() ([]Book, error)
-	FindByID(ID int) (Book, error)
-	Create(book Book) (Book, error)
-	Update(book Book) (Book, error)
-	Delete(book Book) (Book, error)
+	FindAll() ([]domain.Book, error)
+	FindByID(ID int) (domain.Book, error)
+	Create(book domain.Book) (domain.Book, error)
+	Update(book domain.Book) (domain.Book, error)
+	Delete(book domain.Book) (domain.Book, error)
 }
 
 type repository struct {
@@ -18,33 +22,33 @@ func NewRepository(db *gorm.DB) *repository {
 	return &repository{db}
 }
 
-func (r *repository) FindAll() ([]Book, error) {
-	var books []Book
+func (r *repository) FindAll() ([]domain.Book, error) {
+	var books []domain.Book
 	err := r.db.Find(&books).Error
 
 	return books, err
 }
 
-func (r *repository) FindByID(ID int) (Book, error) {
-	var book Book
+func (r *repository) FindByID(ID int) (domain.Book, error) {
+	var book domain.Book
 	err := r.db.Where("id = ?", ID).First(&book).Error
 
 	return book, err
 }
 
-func (r *repository) Create(book Book) (Book, error) {
+func (r *repository) Create(book domain.Book) (domain.Book, error) {
 	err := r.db.Create(&book).Error
 
 	return book, err
 }
 
-func (r *repository) Update(book Book) (Book, error) {
+func (r *repository) Update(book domain.Book) (domain.Book, error) {
 	err := r.db.Save(&book).Error
 
 	return book, err
 }
 
-func (r *repository) Delete(book Book) (Book, error) {
+func (r *repository) Delete(book domain.Book) (domain.Book, error) {
 	err := r.db.Delete(book).Error
 
 	return book, err

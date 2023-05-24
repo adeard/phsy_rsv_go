@@ -1,17 +1,17 @@
 package seeder
 
 import (
-	userlevel "phsy_rsv_go/modules/user_level"
+	"phsy_rsv_go/domain"
 
 	"gorm.io/gorm"
 )
 
 func InsertUserLevel(Db *gorm.DB) {
 	var total int64
-	var ul userlevel.UserLevel
+	var ul domain.UserLevel
 	Db.Model(&ul).Count(&total)
 	if total == 0 {
-		var data = []userlevel.UserLevel{
+		var data = []domain.UserLevel{
 			{
 				Name: "admin", IsActive: true,
 			},
