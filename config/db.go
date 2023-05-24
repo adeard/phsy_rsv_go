@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"phsy_rsv_go/modules/book"
+	"phsy_rsv_go/modules/city"
 	"phsy_rsv_go/modules/province"
 	"phsy_rsv_go/modules/rate"
 	"phsy_rsv_go/modules/user"
@@ -70,14 +71,16 @@ func SqlsvrDev(DbUser string, DbPassword string, DbHost string, DbName string, D
 func migrateDB() {
 	Db.AutoMigrate(&book.Book{})
 	Db.AutoMigrate(&user.User{})
-	Db.AutoMigrate(&usertype.UserType{})
-	Db.AutoMigrate(&userlevel.UserLevel{})
 	Db.AutoMigrate(&rate.Rate{})
+	Db.AutoMigrate(&city.City{})
+	Db.AutoMigrate(&usertype.UserType{})
 	Db.AutoMigrate(&province.Province{})
+	Db.AutoMigrate(&userlevel.UserLevel{})
 }
 
 func seedDB() {
 	seeder.InsertUserLevel(Db)
 	seeder.InsertUserType(Db)
 	seeder.InsertProvince(Db)
+	seeder.InsertCity(Db)
 }
