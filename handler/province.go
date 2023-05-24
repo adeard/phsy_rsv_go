@@ -157,9 +157,17 @@ func (h *provinceHandler) Delete(c *gin.Context) {
 }
 
 func ConvertToProvinceResponse(b domain.Province) domain.ProvinceResponse {
+	var citiesResponse []domain.CityResponse
+
+	if b.Cities != nil {
+		for _, city := range b.Cities {
+			citiesResponse = append(citiesResponse, ConvertToCityResponse(city))
+		}
+	}
 	return domain.ProvinceResponse{
 		ID:       int(b.ID),
 		Name:     b.Name,
 		IsActive: b.IsActive,
+		Cities:   citiesResponse,
 	}
 }

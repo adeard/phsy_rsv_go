@@ -5,6 +5,7 @@ import (
 	"phsy_rsv_go/domain"
 
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type Repository interface {
@@ -32,7 +33,10 @@ func (r *repository) FindAll() ([]domain.Province, error) {
 
 func (r *repository) FindByID(ID int) (domain.Province, error) {
 	var province domain.Province
-	err := r.db.Where("id = ?", ID).First(&province).Error
+	err := r.db.
+		Preload(clause.Associations).
+		Where("id = ?", ID).
+		First(&province).Error
 
 	fmt.Println(province)
 
