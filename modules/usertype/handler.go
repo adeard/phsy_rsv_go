@@ -1,10 +1,9 @@
-package handler
+package usertype
 
 import (
 	"fmt"
 	"net/http"
 	"phsy_rsv_go/domain"
-	usertype "phsy_rsv_go/modules/user_type"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -12,10 +11,10 @@ import (
 )
 
 type userTypeHandler struct {
-	userTypeService usertype.Service
+	userTypeService Service
 }
 
-func NewUserTypeHandler(v1 *gin.RouterGroup, userTypeService usertype.Service) {
+func NewUserTypeHandler(v1 *gin.RouterGroup, userTypeService Service) {
 	handler := &userTypeHandler{userTypeService}
 
 	userType := v1.Group("user-types")

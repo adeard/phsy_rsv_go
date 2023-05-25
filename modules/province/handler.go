@@ -1,10 +1,9 @@
-package handler
+package province
 
 import (
 	"fmt"
 	"net/http"
 	"phsy_rsv_go/domain"
-	"phsy_rsv_go/modules/province"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -12,10 +11,10 @@ import (
 )
 
 type provinceHandler struct {
-	provinceService province.Service
+	provinceService Service
 }
 
-func NewProvinceHandler(v1 *gin.RouterGroup, provinceService province.Service) {
+func NewProvinceHandler(v1 *gin.RouterGroup, provinceService Service) {
 	handler := &provinceHandler{provinceService}
 
 	province := v1.Group("provinces")
@@ -160,8 +159,16 @@ func ConvertToProvinceResponse(b domain.Province) domain.ProvinceResponse {
 	var citiesResponse []domain.CityResponse
 
 	if b.Cities != nil {
-		for _, city := range b.Cities {
-			citiesResponse = append(citiesResponse, ConvertToCityResponse(city))
+		for _, c := range b.Cities {
+			cityResponse := domain.CityResponse{
+				ID:         int(c.ID),
+				Name:       c.Name,
+				IsActive:   c.IsActive,
+				ProvinceId: c.ProvinceId,
+			}
+
+			citiesResponse = append(citiesResponse, cityResponse)
+
 		}
 	}
 	return domain.ProvinceResponse{

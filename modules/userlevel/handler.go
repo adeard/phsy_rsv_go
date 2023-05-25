@@ -1,10 +1,9 @@
-package handler
+package userlevel
 
 import (
 	"fmt"
 	"net/http"
 	"phsy_rsv_go/domain"
-	userlevel "phsy_rsv_go/modules/user_level"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -12,10 +11,10 @@ import (
 )
 
 type userLevelHandler struct {
-	userLevelService userlevel.Service
+	userLevelService Service
 }
 
-func NewUserLevelHandler(v1 *gin.RouterGroup, userLevelService userlevel.Service) {
+func NewUserLevelHandler(v1 *gin.RouterGroup, userLevelService Service) {
 	handler := &userLevelHandler{userLevelService}
 
 	userLevel := v1.Group("user-levels")

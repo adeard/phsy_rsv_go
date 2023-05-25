@@ -1,10 +1,9 @@
-package handler
+package rate
 
 import (
 	"fmt"
 	"net/http"
 	"phsy_rsv_go/domain"
-	"phsy_rsv_go/modules/rate"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -12,10 +11,10 @@ import (
 )
 
 type rateHandler struct {
-	rateService rate.Service
+	rateService Service
 }
 
-func NewRateHandler(v1 *gin.RouterGroup, rateService rate.Service) {
+func NewRateHandler(v1 *gin.RouterGroup, rateService Service) {
 	handler := &rateHandler{rateService}
 
 	rate := v1.Group("rates")

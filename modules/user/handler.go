@@ -1,23 +1,25 @@
-package handler
+package user
 
 import (
 	"fmt"
 	"net/http"
 	"phsy_rsv_go/domain"
 	"phsy_rsv_go/middlewares"
-	"phsy_rsv_go/modules/user"
 	"phsy_rsv_go/utils"
 	"strconv"
+
+	"phsy_rsv_go/modules/userlevel"
+	"phsy_rsv_go/modules/usertype"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
 
 type userHandler struct {
-	userService user.Service
+	userService Service
 }
 
-func NewUserHandler(v1 *gin.RouterGroup, userService user.Service) {
+func NewUserHandler(v1 *gin.RouterGroup, userService Service) {
 
 	handler := &userHandler{userService}
 
@@ -187,8 +189,8 @@ func (h *userHandler) DeleteUser(c *gin.Context) {
 }
 
 func convertToUserResponse(b domain.User) domain.UserResponse {
-	userTypeResponse := ConvertToUserTypeResponse(b.UserType)
-	userLevelResponse := ConvertToUserLevelResponse(b.UserLevel)
+	userTypeResponse := usertype.ConvertToUserTypeResponse(b.UserType)
+	userLevelResponse := userlevel.ConvertToUserLevelResponse(b.UserLevel)
 	return domain.UserResponse{
 		ID:          int(b.ID),
 		Username:    b.Username,

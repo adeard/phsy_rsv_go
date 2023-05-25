@@ -1,10 +1,9 @@
-package handler
+package city
 
 import (
 	"fmt"
 	"net/http"
 	"phsy_rsv_go/domain"
-	"phsy_rsv_go/modules/city"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -12,10 +11,10 @@ import (
 )
 
 type cityHandler struct {
-	cityService city.Service
+	cityService Service
 }
 
-func NewCityHandler(v1 *gin.RouterGroup, cityService city.Service) {
+func NewCityHandler(v1 *gin.RouterGroup, cityService Service) {
 	handler := &cityHandler{cityService}
 
 	city := v1.Group("cities")
@@ -157,7 +156,12 @@ func (h *cityHandler) Delete(c *gin.Context) {
 }
 
 func ConvertToCityResponse(b domain.City) domain.CityResponse {
-	provinceResponse := ConvertToProvinceResponse(b.Province)
+
+	provinceResponse := domain.ProvinceResponse{
+		ID:       int(b.Province.ID),
+		Name:     b.Province.Name,
+		IsActive: b.Province.IsActive,
+	}
 
 	return domain.CityResponse{
 		ID:         int(b.ID),

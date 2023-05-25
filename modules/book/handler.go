@@ -1,10 +1,9 @@
-package handler
+package book
 
 import (
 	"fmt"
 	"net/http"
 	"phsy_rsv_go/domain"
-	"phsy_rsv_go/modules/book"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -12,10 +11,10 @@ import (
 )
 
 type bookHandler struct {
-	bookService book.Service
+	bookService Service
 }
 
-func NewBookHandler(v1 *gin.RouterGroup, bookService book.Service) {
+func NewBookHandler(v1 *gin.RouterGroup, bookService Service) {
 
 	handler := &bookHandler{bookService}
 
